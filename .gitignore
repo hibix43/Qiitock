@@ -1,0 +1,6 @@
+proxies.py
+qiitainfo.py
+static/*.jpg
+static/*.png
+__pycache__/
+*.txt
