@@ -11,6 +11,7 @@
         <a href="{{ oauth_url }}">ログイン・認証</a>
     {% endif %}
     {% if stocks %}
+        {{ stocks | safe }}
     {% endif %}
 </body>
 </html>

@@ -41,6 +41,15 @@ def authenticated_user(token):
     return get(url, headers=headers)
 
 
+def stocks(user_id):
+    url = 'https://qiita.com/api/v2/users/' + user_id + '/stocks'
+    params = {
+        'page': 1,
+        'per_page': 20,
+    }
+    return get(url, params=params, headers=headers)
+
+
 if __name__ == '__main__':
     print('OAuth URL: %s' % oauth_url())
     # print('OAuth Response Text: %s' % oauth_url().text)
