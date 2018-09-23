@@ -4,3 +4,4 @@ static/*.jpg
 static/*.png
 __pycache__/
 *.txt
+.DS_Store
