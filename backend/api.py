@@ -18,8 +18,6 @@ def authorize():
         'state': qiitainfo.STATE,
     }
     return url + '?' + parse.urlencode(params)
-    # results = get(url, params=params)
-    # return results
 
 
 def access_tokens(code, state):

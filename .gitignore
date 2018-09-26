@@ -1,7 +1,7 @@
-proxies.py
-qiitainfo.py
-static/*.jpg
-static/*.png
-__pycache__/
+backend/proxies.py
+backend/qiitainfo.py
+backend/__pycache__/
+*.jpg
+*.png
 *.txt
 .DS_Store
