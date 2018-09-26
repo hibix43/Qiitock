@@ -1,4 +1,5 @@
 import qiitainfo
+import proxies
 from urllib import parse
 from json import dumps
 from requests import get, post, Response
@@ -28,7 +29,7 @@ def access_tokens(code, state):
             'client_secret': qiitainfo.SECRET,
             'code': code,
         }
-        return post(url, dumps(datas), headers=headers)
+        return post(url, dumps(datas), headers=headers,)
     return Response()
 
 
@@ -36,16 +37,17 @@ def authenticated_user(token):
     url = 'https://qiita.com/api/v2/authenticated_user'
     headers['Authorization'] = 'Bearer ' + token
     # print('headers: %s' % headers)
-    return get(url, headers=headers)
+    return get(url, headers=headers,)
 
 
-def stocks(user_id):
+def stocks(user_id, token=''):
     url = 'https://qiita.com/api/v2/users/' + user_id + '/stocks'
+    headers['Authorization'] = 'Bearer ' + token
     params = {
         'page': 1,
         'per_page': 20,
     }
-    return get(url, params=params, headers=headers)
+    return get(url, params=params, headers=headers,)
 
 
 if __name__ == '__main__':

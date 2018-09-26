@@ -25,13 +25,15 @@ def login_url():
 @app.route('/stocks')
 def users_stocks():
     user_id = session.get('user_id')
-    if user_id is None:
+    token = session.get('token')
+    if user_id is None or token is None:
         return jsonify({'Error': 'Please login'})
     else:
-        response = api.stocks(user_id)
+        response = api.stocks(user_id, token=token)
         if response.status_code == 200:
             stocks = response.json()
-            return stocks
+            # print(stocks)
+            return jsonify(stocks)
         else:
             return jsonify({'Error': 'Users stocks not found'})
 
@@ -42,7 +44,9 @@ def callback():
     state = request.args.get('state')
     response = api.access_tokens(code, state)
     if response.status_code == 201:
-        response = api.authenticated_user(response.json()['token'])
+        token = response.json()['token']
+        session['token'] = token
+        response = api.authenticated_user(token)
         if response.status_code == 200:
             session['user_id'] = response.json()['id']
     return redirect(url_for('index'))

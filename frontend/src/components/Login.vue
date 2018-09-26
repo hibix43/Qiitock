@@ -1,10 +1,7 @@
 <template>
-  <div id="login" v-if="results.login_url">
+  <div id="login" v-if="results !== null">
     <h1>Login!</h1>
     <a v-bind:href="results.login_url">ログイン・認証</a>
-  </div>
-  <div v-else>
-    <h1>Logged</h1>
   </div>
 </template>
 
@@ -24,7 +21,9 @@ export default {
         .get('/login')
         .then(
           function (response) {
-            vm.results = response.data
+            if (response.data.login_url) {
+              vm.results = response.data.login_url
+            }
           }
         )
     }
