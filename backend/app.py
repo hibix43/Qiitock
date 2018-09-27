@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 from flask import redirect, url_for, jsonify, session
 import qiitainfo
 import api
+from edit_json import EditJson
 
 app = Flask(__name__,
             static_folder='../dist/static',
@@ -32,8 +33,10 @@ def users_stocks():
         response = api.stocks(user_id, token=token)
         if response.status_code == 200:
             stocks = response.json()
-            # print(stocks)
-            return jsonify(stocks)
+            # JSONを書き換え、タグ別に分類する
+            edit = EditJson()
+            edit.group_by_tag(stocks)
+            return jsonify(edit.items)
         else:
             return jsonify({'Error': 'Users stocks not found'})
 

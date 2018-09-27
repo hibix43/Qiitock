@@ -1,11 +1,14 @@
 <template>
   <div id="stocks" v-if="stocks !== null">
     <h1>Stocks!</h1>
-    <ul>
-      <li v-for="stock in stocks" v-bind:key="stock.id">
-        <a v-bind:href="stock.url">{{ stock.title }}</a>
-      </li>
-    </ul>
+    <div v-for="(stock, tag) in stocks" v-bind:key="stock.id">
+      <h2>{{ tag }}</h2>
+      <ul>
+        <li v-for="item in stock" v-bind:key="item.id">
+          <a v-bind:href="item.url">{{ item.title }}</a>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -34,9 +37,6 @@ export default {
   },
   created: function () {
     this.getStocks()
-  },
-  mounted: function () {
-    this.getStocks()
   }
 }
 </script>
@@ -46,8 +46,8 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  width: 690px;
+  margin: 60px auto;
 }
 </style>

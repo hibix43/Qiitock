@@ -29,7 +29,8 @@ def access_tokens(code, state):
             'client_secret': qiitainfo.SECRET,
             'code': code,
         }
-        return post(url, dumps(datas), headers=headers,)
+        return post(url, dumps(datas), headers=headers,
+                    proxies=proxies.PROXIES)
     return Response()
 
 
@@ -37,17 +38,19 @@ def authenticated_user(token):
     url = 'https://qiita.com/api/v2/authenticated_user'
     headers['Authorization'] = 'Bearer ' + token
     # print('headers: %s' % headers)
-    return get(url, headers=headers,)
+    return get(url, headers=headers,
+                proxies=proxies.PROXIES)
 
 
-def stocks(user_id, token=''):
+def stocks(user_id, page=1, token=''):
     url = 'https://qiita.com/api/v2/users/' + user_id + '/stocks'
     headers['Authorization'] = 'Bearer ' + token
     params = {
-        'page': 1,
-        'per_page': 20,
+        'page': page,
+        'per_page': 10,
     }
-    return get(url, params=params, headers=headers,)
+    return get(url, params=params, headers=headers,
+                proxies=proxies.PROXIES)
 
 
 if __name__ == '__main__':

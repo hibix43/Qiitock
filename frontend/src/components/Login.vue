@@ -1,7 +1,7 @@
 <template>
   <div id="login" v-if="results !== null">
     <h1>Login!</h1>
-    <a v-bind:href="results.login_url">ログイン・認証</a>
+    <a v-bind:href="results">ログイン・認証</a>
   </div>
 </template>
 
