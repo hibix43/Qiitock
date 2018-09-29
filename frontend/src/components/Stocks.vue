@@ -4,10 +4,15 @@
     <div v-for="stock in stocks" v-bind:key="stock.id">
       <!--td?-->
       <a v-bind:href="stock.url">{{ stock.title }}</a>
-      <div v-for="(tag_name, index) in stock.tags" v-bind:key="index">
-        <li>{{ tag_name }}</li>
+      <ul>
+        <li v-for="(tag_name, index) in stock.tags" v-bind:key="index">
+          {{ tag_name }}
+        </li>
+      </ul>
+      <button v-on:click="toggleAgenda(stock)">Agenda</button>
+      <div v-show="stock.show_agenda">
+        <span v-html="stock.agenda"></span>
       </div>
-      <p>目次を見る</p>
     </div>
     <div v-if="pageCounter !== null">
       <button v-on:click="getMore">もっとみる</button>
@@ -27,14 +32,18 @@ export default {
   },
   methods: {
     getStocks: function () {
-      var vm = this
+      let vm = this
       axios
         .get('/stocks/' + vm.pageCounter)
         .then(
           function (response) {
             if (!response.data.Error) {
               for (let i = 0; i < response.data.length; i++) {
-                vm.$set(vm.stocks, (vm.pageCounter - 1) * 20 + i, response.data[i])
+                const index = (vm.pageCounter - 1) * 20 + i
+                // JSONデータを配列に格納
+                vm.$set(vm.stocks, index, response.data[i])
+                // 目次の表示トグル
+                vm.$set(vm.stocks[index], 'show_agenda', false)
               }
               if (response.data.length < 20) {
                 vm.pageCounter = null
@@ -46,11 +55,14 @@ export default {
         )
     },
     getMore: function () {
-      var vm = this
+      let vm = this
       if (vm.pageCounter !== null) {
         vm.pageCounter++
         vm.getStocks()
       }
+    },
+    toggleAgenda: function (stock) {
+      stock.show_agenda = !stock.show_agenda
     }
   },
   created: function () {

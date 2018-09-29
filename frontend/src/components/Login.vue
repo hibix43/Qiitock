@@ -30,6 +30,7 @@ export default {
   },
   created: function () {
     this.getLoginURL()
+    console.log(this)
   }
 }
 </script>

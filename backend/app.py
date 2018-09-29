@@ -33,7 +33,7 @@ def users_stocks(page):
         response = api.stocks(user_id, page=page, token=token)
         if response.status_code == 200:
             stocks = response.json()
-            # JSONを必要なキーのみに書き換える
+            # JSONを最低限の項目のみに書き換える
             stocks = minimum_entries(stocks)
             return jsonify(stocks)
         else:
