@@ -1,20 +1,20 @@
-class EditJson():
-    items = {}
+def minimum_entries(entries):
+    return [only_needed_key(entry) for entry in entries]
 
-    def __init__(self):
-        pass
 
-    # タグごとに記事を分類する
-    def group_by_tag(self, got_json):
-        for item in got_json:
-            # キーの確認
-            if 'tags' in item:
-                # 投稿のタグを取得
-                for tags in item['tags']:
-                    tag = tags.get('name')
-                    # 既に登録済みなら更新
-                    if tag in self.items.keys():
-                        self.items[tag].append(item)
-                    # 更新していなければ作成
-                    else:
-                        self.items[tag] = [item]
+def only_needed_key(entry):
+    NEED_KEYS = ['body', 'created_at', 'id', 'tags', 'title', 'url']
+    minimum_entry = {k: [] for k in NEED_KEYS}
+    for key in NEED_KEYS:
+        try:
+            # タグのみ構造が異なるため、別処理
+            if key != 'tags':
+                # 必要な項目を取得
+                minimum_entry[key] = entry.pop(key)
+            else:
+                # 投稿に結びついたすべてのタグ名を取得
+                minimum_entry['tags'] = [
+                    tag['name'] for tag in entry.pop('tags')]
+        except KeyError:
+            pass
+    return minimum_entry

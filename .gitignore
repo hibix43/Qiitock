@@ -4,8 +4,8 @@ backend/__pycache__/
 *.jpg
 *.png
 *.txt
+*.json
 .DS_Store
-
 node_modules/
 /dist/
 npm-debug.log*
