@@ -1,7 +1,7 @@
 <template>
-  <div id="login" v-if="results !== null">
+  <div id="login" v-if="login_url">
     <h1>Login!</h1>
-    <a v-bind:href="results">ログイン・認証</a>
+    <a v-bind:href="login_url">ログイン・認証</a>
   </div>
 </template>
 
@@ -11,7 +11,8 @@ export default {
   el: '#login',
   data: function () {
     return {
-      results: null
+      login_url: null,
+      error: ''
     }
   },
   methods: {
@@ -21,8 +22,10 @@ export default {
         .get('/login')
         .then(
           function (response) {
-            if (response.data.login_url) {
-              vm.results = response.data.login_url
+            if (response.data.error) {
+              vm.error = response.data.error.error_msg
+            } else if (response.data.login_data) {
+              vm.login_url = response.data.login_data.login_url
             }
           }
         )

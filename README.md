@@ -1,4 +1,4 @@
-# QiitaNote
+# Qiitock
 
 ## 目的・コンセプト
 

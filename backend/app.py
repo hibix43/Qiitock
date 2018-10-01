@@ -18,9 +18,9 @@ def index():
 @app.route('/login')
 def login_url():
     if session.get('user_id') is None:
-        return jsonify({'login_url': api.authorize()})
+        return jsonify(login_data={'login_url': api.authorize()})
     else:
-        return jsonify({'Error': 'Already logged'})
+        return jsonify(error={'error_msg': 'Already logged'})
 
 
 @app.route('/stocks/<int:page>')
@@ -28,16 +28,16 @@ def users_stocks(page):
     user_id = session.get('user_id')
     token = session.get('token')
     if user_id is None or token is None:
-        return jsonify({'Error': 'Please login'})
+        return jsonify(error={'error_msg': 'Please login'})
     else:
         response = api.stocks(user_id, page=page, token=token)
         if response.status_code == 200:
             stocks = response.json()
             # JSONを最低限の項目のみに書き換える
             stocks = minimum_entries(stocks)
-            return jsonify(stocks)
+            return jsonify(stocks=stocks)
         else:
-            return jsonify({'Error': 'Users stocks not found'})
+            return jsonify(error={'error_msg': 'Users stocks not found'})
 
 
 @app.route('/callback')

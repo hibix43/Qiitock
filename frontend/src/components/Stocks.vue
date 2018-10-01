@@ -1,12 +1,12 @@
 <template>
-  <div id="stocks" v-if="stocks !== null">
-    <h1>Stocks!</h1>
+  <div id="stocks" v-if="stocks.length > 0">
+    <h1>Qiitock</h1>
     <input type="text" v-model="searchWords" placeholder="Search title or tag.."/>
     <div v-for="stock in filteredStocks" v-bind:key="stock.id">
       <!--td?-->
       <h2>{{ stock.title }}</h2>
       <a v-bind:href="stock.url" target="_blank">Qiitaで読む</a>
-      <button v-on:click="toggleAgenda(stock)">アジェンダを見る</button>
+      <button v-on:click="toggleAgenda(stock)">アジェンダを開く</button>
       <div v-for="(tagName, index) in stock.tags" v-bind:key="index">
         <button v-on:click="searchStocksByTag(tagName)">{{ tagName }}</button>
       </div>
@@ -28,6 +28,7 @@ export default {
   data: function () {
     return {
       stocks: [],
+      error: '',
       pageCounter: 1,
       searchWords: ''
     }
@@ -50,11 +51,14 @@ export default {
         .get('/stocks/' + vm.pageCounter)
         .then(
           function (response) {
-            if (!response.data.Error) {
-              for (let i = 0; i < response.data.length; i++) {
+            if (response.data.error) {
+              vm.error = response.data.error.error_msg
+            } else if (response.data.stocks) {
+              const stocks = response.data.stocks
+              for (let i = 0; i < stocks.length; i++) {
                 const index = (vm.pageCounter - 1) * 20 + i
                 // JSONデータを配列に格納
-                vm.$set(vm.stocks, index, response.data[i])
+                vm.$set(vm.stocks, index, stocks[i])
                 // 目次の表示トグル
                 vm.$set(vm.stocks[index], 'showAgenda', false)
               }
@@ -62,8 +66,6 @@ export default {
               if (response.data.length < 20) {
                 vm.pageCounter = null
               }
-              console.log(response.data)
-              console.log(vm.stocks)
             }
           }
         )
@@ -94,7 +96,6 @@ export default {
           }
         }
       }
-      console.log(stocks)
       return stocks
     },
     arangeSearchWords: function () {
@@ -111,6 +112,7 @@ export default {
   },
   created: function () {
     this.getStocks()
+    console.log(this)
   }
 }
 </script>
