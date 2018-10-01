@@ -25,3 +25,9 @@ Qiitaのストックを管理する。振り返りやすくする。
   - r'```.+```'は間違い。r'`{3}.+`{3}'でも間違い。
   - r'`{3}.+?`{3}'が正しい。
   - +?：最短一致。条件に合う「一番短い部分」に一致する。
+- 「npm run build」が実行できない
+  - /frontendにおいて
+  - $rm -rf node_modules
+  - $npm install
+  - 上記のコマンドで解決
+  - [Missing modules when running npm run build or npm install #780](https://github.com/olefredrik/FoundationPress/issues/780)

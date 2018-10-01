@@ -6,12 +6,13 @@
       <!--td?-->
       <h2>{{ stock.title }}</h2>
       <a v-bind:href="stock.url" target="_blank">Qiitaで読む</a>
+      <button v-on:click="toggleAgenda(stock)">アジェンダを見る</button>
       <div v-for="(tagName, index) in stock.tags" v-bind:key="index">
         <button v-on:click="searchStocksByTag(tagName)">{{ tagName }}</button>
       </div>
-      <button v-on:click="toggleAgenda(stock)">Agenda</button>
-      <div v-show="stock.showAgenda">
+     <div v-show="stock.showAgenda">
         <span v-html="stock.agenda"></span>
+        <button v-on:click="toggleAgenda(stock)">アジェンダを閉じる</button>
       </div>
     </div>
     <div v-if="pageCounter !== null">
