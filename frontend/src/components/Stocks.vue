@@ -2,6 +2,7 @@
   <div id="stocks" v-if="stocks.length > 0">
     <h1>Qiitock</h1>
     <input type="text" v-model="searchWords" placeholder="Search title or tag.."/>
+    <button v-on:click="resetSearch()">Reset</button>
     <div v-for="stock in filteredStocks" v-bind:key="stock.id">
       <!--td?-->
       <h2>{{ stock.title }}</h2>
@@ -108,6 +109,9 @@ export default {
     },
     searchStocksByTag: function (tag) {
       this.searchWords = tag
+    },
+    resetSearch: function () {
+      this.searchWords = ''
     }
   },
   created: function () {
