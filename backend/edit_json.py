@@ -4,7 +4,7 @@ import re
 def minimum_entries(entries):
     entries = [only_needed_key(entry) for entry in entries]
     for entry in entries:
-        entry['agenda'] = agenda_from_markdown(entry['body'])
+        entry['agenda'] = agenda_from_markdown(entry)
     return entries
 
 
@@ -26,9 +26,21 @@ def only_needed_key(entry):
     return minimum_entry
 
 
-def agenda_from_markdown(body):
+def convert_heading_to_li(url, heading):
+    # #を取り除く
+    heading = heading.replace('#', '')
+    # #のあとにスペースがあるなら、取り除く
+    if heading.startswith(' '):
+        heading = heading[1:]
+    # テンプレートに当てはめる
+    a_template = '<a href="{0}#{1}" target="_blank">{1}</a>'
+    template = f'<li>{a_template.format(url, heading)}</li>'
+    return template
+
+
+def agenda_from_markdown(entry):
     # コードブロック削除
-    body = re.sub(r'`{3}.+?`{3}', '', body, flags=re.DOTALL)
+    body = re.sub(r'`{3}.+?`{3}', '', entry['body'], flags=re.DOTALL)
     # 見出しを抽出
     headings = [line for line in body.split('\n') if line.startswith('#')]
     # 目次
@@ -42,12 +54,12 @@ def agenda_from_markdown(body):
         # 調査中のレベルであれば
         if level == serch_level:
             # 追加
-            agenda.append('<li>' + heading + '</li>')
+            agenda.append(convert_heading_to_li(entry['url'], heading))
         # 1つ下のレベルであれば
         elif level > serch_level:
             # ネストしたうえで、追加
             agenda.append('<ul>')
-            agenda.append('<li>' + heading + '</li>')
+            agenda.append(convert_heading_to_li(entry['url'], heading))
             ul_num += 1
             serch_level = level
         # 1つ上のレベルであれば
@@ -57,15 +69,11 @@ def agenda_from_markdown(body):
                 # ネストを閉じる
                 agenda.append('</ul>')
                 ul_num -= 1
-            agenda.append('<li>' + heading + '</li>')
+            agenda.append(convert_heading_to_li(entry['url'], heading))
             serch_level = level
     # 帳尻を合わせる
     while ul_num > 0:
         agenda.append('</ul>')
         ul_num -= 1
-    # [#]を取り除く
-    agenda = [heading.replace('#', '')
-              if heading.startswith('<li>#') else heading
-              for heading in agenda]
     # 1つの文字列として結合
     return '\n'.join(agenda)
