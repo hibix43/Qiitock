@@ -32,6 +32,10 @@ def convert_heading_to_li(url, heading):
     # #のあとにスペースがあるなら、取り除く
     if heading.startswith(' '):
         heading = heading[1:]
+    # リンク付きなら、リンクを外す
+    if re.search(r'\[.+?\]\(.+?\)', heading):
+        title = re.findall(r'\[.+?\]', heading)[0]
+        heading = re.sub(r'\[.+?\]\(.+?\)', title[1:-1], heading)
     # テンプレートに当てはめる
     a_template = '<a href="{0}#{1}" target="_blank">{1}</a>'
     template = f'<li>{a_template.format(url, heading)}</li>'
