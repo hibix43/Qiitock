@@ -1,23 +1,32 @@
 <template>
   <div id="stocks" v-if="stocks.length > 0">
-    <h1>Qiitock</h1>
-    <input type="text" v-model="searchWords" placeholder="Search title or tag.."/>
-    <button v-on:click="resetSearch()">Reset</button>
-    <div v-for="stock in filteredStocks" v-bind:key="stock.id">
-      <!--td?-->
-      <h2>{{ stock.title }}</h2>
-      <a v-bind:href="stock.url" target="_blank">Qiitaで読む</a>
-      <button v-on:click="toggleAgenda(stock)">アジェンダを開く</button>
-      <div v-for="(tagName, index) in stock.tags" v-bind:key="index">
-        <button v-on:click="searchStocksByTag(tagName)">{{ tagName }}</button>
-      </div>
-     <div v-show="stock.showAgenda">
-        <span v-html="stock.agenda"></span>
-        <button v-on:click="toggleAgenda(stock)">アジェンダを閉じる</button>
+    <div id="headline">
+      <h1>Qiitock</h1>
+      <div class="search">
+        <input type="text" v-model="searchWords" placeholder="Search title or tag ..."/>
+        <button v-on:click="resetSearch()">Reset</button>
       </div>
     </div>
-    <div v-if="pageCounter !== null">
-      <button v-on:click="getMoreStocks">もっとみる</button>
+    <div id="main">
+      <div v-for="stock in filteredStocks" v-bind:key="stock.id" class="stock">
+        <h2>{{ stock.title }}</h2>
+        <div class="tag-buttons">
+          <div v-for="(tagName, index) in stock.tags" v-bind:key="index">
+            <button v-on:click="searchStocksByTag(tagName)">{{ tagName }}</button>
+          </div>
+        </div>
+        <div class="link-buttons">
+          <button v-on:click="toggleAgenda(stock)" class="agenda-button">{{ stock.agendaText }}</button>
+          <a v-bind:href="stock.url" target="_blank" class="qiita-link">Qiitaで読む</a>
+          <div v-show="stock.showAgenda">
+            <span v-html="stock.agenda" class="agenda-list"></span>
+            <button v-on:click="toggleAgenda(stock)" class="agenda-button">{{ stock.agendaText }}</button>
+          </div>
+        </div>
+      </div>
+      <div v-if="pageCounter !== null" id="more-show">
+        <button v-on:click="getMoreStocks">もっとみる</button>
+      </div>
     </div>
   </div>
 </template>
@@ -62,6 +71,7 @@ export default {
                 vm.$set(vm.stocks, index, stocks[i])
                 // 目次の表示トグル
                 vm.$set(vm.stocks[index], 'showAgenda', false)
+                vm.$set(vm.stocks[index], 'agendaText', 'アジェンダを開く')
               }
               // これ以上のストックは存在しない
               if (response.data.length < 20) {
@@ -80,6 +90,7 @@ export default {
     },
     toggleAgenda: function (stock) {
       stock.showAgenda = !stock.showAgenda
+      stock.agendaText = stock.showAgenda ? 'アジェンダを閉じる' : 'アジェンダを開く'
     },
     searchStocks: function () {
       // 検索結果
@@ -116,18 +127,105 @@ export default {
   },
   created: function () {
     this.getStocks()
-    console.log(this)
   }
 }
 </script>
 
 <style>
+#container {
+  background-color: #59ABE3;
+}
 #stocks {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  width: 100%;
+}
+#headline {
+  width: 100%;
+  text-align: center;
+  padding: 64px 0;
+  background-color: #59ABE3;
+}
+#headline h1 {
+  margin-bottom: 32px;
+  font-size: 3rem;
+  color:#FFFFFF;
+}
+#headline .search input {
+  padding: 10px;
+  font-size: 1.3em;
+  font-family: Arial, sans-serif;
+  color: #aaa;
+  border: 1px solid #ccc;
+  margin: 0 0 20px;
+  width: 300px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  -moz-box-shadow: inset 0 0 4px rgba(0,0,0,0.2);
+  -webkit-box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.2);
+}
+#headline .search button,
+#more-show button {
+  padding: 8px 32px;
+  border: 2px solid #59ABE3;
+  background-color: #FFFFFF;
+  color: #59ABE3;
+  border-radius: 5px;
+  font-size: 1.3em;
+  font-weight: 600;
+}
+#main {
+  background-color: #59ABE3;
+}
+#main .stock {
+  max-width: 690px;
+  margin: -1px auto 16px auto;
+  padding: 64px;
   color: #2c3e50;
-  width: 690px;
-  margin: 60px auto;
+  background-color: #FFFFFF;
+  border-radius:5px;
+  -moz-box-shadow:0 2px 2px 0 rgba(0,0,0,0.2);
+  -webkit-box-shadow:0 2px 2px 0 rgba(0,0,0,0.2);
+  box-shadow:0 2px 2px 0 rgba(0,0,0,0.2);
+}
+#main .stock:first-child {
+  margin-top: -32px;
+}
+#main .stock .tag-buttons {
+  text-align: right;
+}
+#main .stock .tag-buttons div {
+  display: inline-block;
+}
+#main .stock .tag-buttons button {
+  padding: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  border: 0;
+  background-color: #FFFFFF;
+  color: #999999;
+}
+#main .stock .link-buttons .qiita-link,
+#main .stock .link-buttons .agenda-button{
+    padding: 8px;
+    font-size: .8em;
+    font-weight: 100;
+    border-style: none;
+    background: #59ABE3;
+    border-radius: 3px;
+    color: #FFFFFF;
+}
+#main .stock .link-buttons .qiita-link {
+    text-decoration: none;
+    line-height: normal;
+    display: inline-block;
+}
+#main .stock .link-buttons .agenda-list ul{
+  word-break: break-all;
+  padding-inline-start: 8px;
+}
+#more-show {
+  text-align: center;
+  padding: 24px 0 64px 0;
 }
 </style>
