@@ -57,12 +57,12 @@ export default {
 #login h1 {
   margin-bottom: 64px;
   font-size: 3rem;
-  color: #59ABE3;
+  color: #3F51B5;
 }
 #login .button {
   padding: 16px 64px;
-  background: #59ABE3;
-  border: 2px solid #59ABE3;
+  background: #3F51B5;
+  border: 2px solid #3F51B5;
   border-radius: 4px;
 }
 #login > a, #login > a:hover, #login > a:visited {
@@ -80,7 +80,7 @@ export default {
 #login .description a:visited {
   text-decoration: none;
   font-weight: bold;
-  color: #59ABE3;
+  color: #AD1457;
 }
 
 #login .description p {

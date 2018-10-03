@@ -133,7 +133,7 @@ export default {
 
 <style>
 #container {
-  background-color: #59ABE3;
+  background-color: #3F51B5;
 }
 #stocks {
   width: 100%;
@@ -142,7 +142,7 @@ export default {
   width: 100%;
   text-align: center;
   padding: 64px 0;
-  background-color: #59ABE3;
+  background-color: #3F51B5;
 }
 #headline h1 {
   margin-bottom: 32px;
@@ -167,15 +167,15 @@ export default {
 #headline .search button,
 #more-show button {
   padding: 8px 32px;
-  border: 2px solid #59ABE3;
+  border: 2px solid #3F51B5;
   background-color: #FFFFFF;
-  color: #59ABE3;
+  color: #3F51B5;
   border-radius: 5px;
   font-size: 1.3em;
   font-weight: 600;
 }
 #main {
-  background-color: #59ABE3;
+  background-color: #3F51B5;
 }
 #main .stock {
   max-width: 690px;
@@ -211,7 +211,7 @@ export default {
     font-size: .8em;
     font-weight: 100;
     border-style: none;
-    background: #59ABE3;
+    background-color: #AD1457;
     border-radius: 3px;
     color: #FFFFFF;
 }
