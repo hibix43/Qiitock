@@ -1,13 +1,10 @@
-backend/proxies.py
-backend/qiitainfo.py
-backend/__pycache__/
+proxies.py
+secret_ids.py
+__pycache__/
 *.jpg
 *.png
-*.txt
-*.json
 .DS_Store
 node_modules/
-/dist/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
