@@ -1,5 +1,4 @@
 import qiitainfo
-import proxies
 from urllib import parse
 from json import dumps
 from requests import get, post, Response
