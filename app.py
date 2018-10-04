@@ -5,8 +5,8 @@ import api
 from edit_json import minimum_entries
 
 app = Flask(__name__,
-            static_folder='../dist/static',
-            template_folder="../dist")
+            static_folder='./dist/static',
+            template_folder="./dist")
 app.secret_key = qiitainfo.SESSION_SECRET_KEY
 
 
