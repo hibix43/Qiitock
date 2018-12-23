@@ -4,7 +4,7 @@ click==6.7
 defusedxml==0.5.0
 dj-database-url==0.5.0
 dj-static==0.0.6
-Django==2.1
+Django==2.1.4
 django-heroku==0.3.1
 Flask==1.0.2
 gunicorn==19.9.0
